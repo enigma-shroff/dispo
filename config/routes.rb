@@ -11,4 +11,16 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  devise_for :users
+  
+  resources :events, only: [:index, :show] do
+    member do
+      post 'upload'
+    end
+  end
+  
+  namespace :admin do
+    resources :events
+  end
 end
+

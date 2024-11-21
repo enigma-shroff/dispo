@@ -61,3 +61,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'shrine'
+gem 'devise'
+gem 'pundit'
+gem 'image_processing'

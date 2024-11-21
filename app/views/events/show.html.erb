@@ -1,0 +1,19 @@
+# app/views/events/show.html.erb
+<div class="event-details">
+  <h1><%= @event.title %></h1>
+  <p><%= @event.description %></p>
+  
+  <div class="event-images">
+    <% @event_images.each do |event_image| %>
+      <%= image_tag event_image.image_url(:thumb) %>
+    <% end %>
+  </div>
+
+  <h2>Upload Images</h2>
+  <%= form_with(url: upload_event_path(@event), method: :post, multipart: true) do |f| %>
+    <div class="upload-field">
+      <%= f.file_field :images, multiple: true, accept: 'image/*' %>
+    </div>
+    <%= f.submit "Upload Photos" %>
+  <% end %>
+</div>
