@@ -19,7 +19,12 @@
     <%= favicon_link_tag asset_path('icon.png') %>
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "https://unpkg.com/swiper/swiper-bundle.min.css" %>
+    <%= javascript_include_tag "https://unpkg.com/swiper/swiper-bundle.min.js" %>
+
     <%= javascript_importmap_tags %>
      <style>
       :root {
@@ -212,6 +217,26 @@
         background-color: #e74c3c; /* Red background for alerts */
         color: #ffffff; /* White text */
         border: 1px solid #c0392b; /* Darker red border */
+      }
+
+      .carousel-item {
+        # width: 100%;
+        height: 120px; /* Adjust the height to fit your layout */
+        # object-fit: cover; /* Ensure the image fits nicely */
+        border-radius: 8px;
+        filter: grayscale(20%) sepia(10%);
+      }
+
+      .swiper-container {
+        width: 100%;
+        max-width: 1000px; /* Adjust based on your layout */
+        margin: auto;
+      }
+
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
     </style>
