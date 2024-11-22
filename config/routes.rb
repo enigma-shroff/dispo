@@ -13,14 +13,20 @@ Rails.application.routes.draw do
   # root "posts#index"
   devise_for :users
   
-  resources :events, only: [:index, :show] do
+  resources :events, only: [:show] do
     member do
-      post 'upload'
+      post :upload
     end
   end
   
+  get 'events', to: redirect('/admin/events')
+
   namespace :admin do
-    resources :events
+    resources :events do
+      member do
+        get :generate_qr
+      end
+    end
   end
 end
 

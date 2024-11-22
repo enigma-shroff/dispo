@@ -1,5 +1,11 @@
-# app/views/events/show.html.erb
-<div class="event-details">
+<div class="landing-hero">
+<!-- Flash messages -->
+  <% if flash[:notice] %>
+    <div class="flash-notice"><%= flash[:notice] %></div>
+  <% end %>
+  <% if flash[:alert] %>
+    <div class="flash-alert"><%= flash[:alert] %></div>
+  <% end %>
   <h1><%= @event.title %></h1>
   <p><%= @event.description %></p>
   
@@ -9,11 +15,13 @@
     <% end %>
   </div>
 
-  <h2>Upload Images</h2>
-  <%= form_with(url: upload_event_path(@event), method: :post, multipart: true) do |f| %>
-    <div class="upload-field">
-      <%= f.file_field :images, multiple: true, accept: 'image/*' %>
-    </div>
-    <%= f.submit "Upload Photos" %>
-  <% end %>
+  <div class="upload-section">
+    <h2>Upload Photos</h2>
+    <%= form_with(url: upload_event_path(@event), method: :post, multipart: true) do |f| %>
+      <div class="upload-field">
+        <%= f.file_field :images, multiple: true, accept: 'image/*' %>
+      </div>
+      <%= f.submit "Upload Photos", class: "btn-primary" %>
+    <% end %>
+  </div>
 </div>

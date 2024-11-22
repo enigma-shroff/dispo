@@ -1,0 +1,7 @@
+<h1>QR Code for Event: <%= @event.name %></h1>
+
+<p>Scan the QR Code below to view the event:</p>
+
+<%= image_tag url_for(action: :generate_qr, format: :png, id: @event.id) %>
+
+<%= link_to 'Back to Events', events_path %>

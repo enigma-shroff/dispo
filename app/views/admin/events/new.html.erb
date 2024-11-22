@@ -1,33 +1,35 @@
-<div class="admin-event-form">
-  <h1>Create New Event</h1>
+<div class="landing-hero">
+  <div class="upload-section">
+    <h1>Create New Event</h1>
 
-  <%= form_with(model: [:admin, @event], local: true) do |f| %>
-    <% if @event.errors.any? %>
-      <div class="error_messages">
-        <h2>Form is invalid</h2>
-        <ul>
-          <% @event.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+    <%= form_with(model: [:admin, @event], local: true) do |f| %>
+      <% if @event.errors.any? %>
+        <div class="error_messages">
+          <h2>Form is invalid</h2>
+          <ul>
+            <% @event.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title %>
       </div>
+
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :start_date %>
+        <%= f.date_field :start_date %>
+      </div>
+
+      <%= f.submit "Create Event", class: "btn-primary" %>
     <% end %>
-
-    <div class="form-group">
-      <%= f.label :title %>
-      <%= f.text_field :title, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.text_area :description, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :start_date %>
-      <%= f.date_field :start_date, class: "form-control" %>
-    </div>
-
-    <%= f.submit "Create Event", class: "btn btn-primary" %>
-  <% end %>
+  </div>
 </div>

@@ -1,10 +1,10 @@
 class Admin::EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_event, only: [:edit, :update, :destroy]
+  before_action :set_event, only: [:edit, :update, :destroy, :generate_qr]
   
   def index
-    @events = Event.all
+    @events = Event.where(admin: current_user)
   end
   
   def edit
@@ -40,6 +40,22 @@ class Admin::EventsController < ApplicationController
     end
   end
   
+  def generate_qr
+    url = event_url(@event) # Generates the full URL for the event
+    qr_code = RQRCode::QRCode.new(url)
+
+    svg = qr_code.as_svg(
+      offset: 0,
+      color: "000",
+      shape_rendering: "crispEdges",
+      module_size: 6,
+      standalone: true
+    )
+  
+    # Explicitly render the SVG with correct headers
+    render plain: svg, content_type: "image/svg+xml"
+  end
+
   private
   
   def require_admin
@@ -51,6 +67,6 @@ class Admin::EventsController < ApplicationController
   end
   
   def set_event
-    @event = Event.find(params[:id])
+    @event = current_user.admin_events.find(params[:id])
   end
 end

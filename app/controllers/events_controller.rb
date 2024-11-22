@@ -3,12 +3,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :upload]
   skip_before_action :verify_authenticity_token, only: [:upload]
   skip_before_action :authenticate_user!
-  
-  
-  def index
-    @events = Event.all
-  end
-  
+
   def show
     @event_images = @event.event_images
   end
@@ -21,15 +16,21 @@ class EventsController < ApplicationController
         @event.event_images.create!(image: image)
       end
       
-      render json: { message: 'Image uploaded successfully' }, status: :created
+      flash[:notice] = 'Images uploaded successfully'
     else
-      render json: { error: 'No image provided' }, status: :bad_request
+      flash[:alert] = 'No valid images provided'
     end
+    return redirect_to event_path(@event)
   end
-  
+
   private
   
   def set_event
     @event = Event.find(params[:id])
   end
+
+  def event_url(event)
+    "#{request.base_url}/events/#{event.id}"
+  end
+
 end
