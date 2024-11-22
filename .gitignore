@@ -30,6 +30,7 @@
 
 /public/assets
 /public/uploads
+/public/uploads/cache
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 

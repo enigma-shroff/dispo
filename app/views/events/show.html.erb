@@ -18,11 +18,11 @@
     <div 
       data-carousel-target="slidesContainer"
       class="flex transition-transform duration-500 ease-in-out"
-      style="width: <%= (@event_images.count / 10.0).ceil * 100 %>%;"
+      style="width: <%= (@total_pages) * 100 %>%;"
     >
       <div 
         data-carousel-target="slide" 
-        class="flex-shrink-0 w-full flex justify-between gap-2"
+        class="flex-shrink-0 w-full flex justify-between gap-1"
       >
         <% @event_images.each do |image| %>
           <div class="flex-shrink-0 w-[9.9%]">
@@ -32,7 +32,6 @@
       </div>
     </div>
 
-    <!-- Previous Button -->
     <div class="absolute top-1/2 left-4 transform -translate-y-1/2 z-10">
       <button 
         data-action="click->carousel#previous"
@@ -42,7 +41,6 @@
       </button>
     </div>
 
-    <!-- Next Button -->
     <div class="absolute top-1/2 right-4 transform -translate-y-1/2 z-10">
       <button 
         data-action="click->carousel#next"

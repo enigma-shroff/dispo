@@ -3,14 +3,14 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["slidesContainer", "slide"];
   static values = {
-    current: { type: Number, default: 0 },  // Track the current page (slide)
-    totalPages: { type: Number }  // Total number of pages (calculated from your pagination)
+    current: { type: Number, default: 0 },  // Current page/slide
+    totalPages: { type: Number }           // Total number of pages from pagination
   }
 
   connect() {
-    // Calculate the total number of slides
-    this.totalSlides = Math.ceil(this.totalPagesValue); // 10 images per slide
-    console.log(`Total slides: ${this.totalSlides}`); // Check total slides
+    // Ensure slidesContainer width matches total slides and total images
+    this.totalSlides = Math.ceil(this.totalPagesValue); // Total number of slides = total pages
+    // Set each slide to take the full width of the container
     this.updateSlides();
   }
 
@@ -19,7 +19,6 @@ export default class extends Controller {
       this.currentValue++;
       this.updateSlides();
     } else {
-      // Optionally, add logic to fetch next set of images if this is the last slide
       this.loadNextPage();
     }
   }
@@ -32,13 +31,13 @@ export default class extends Controller {
   }
 
   updateSlides() {
-    const offset = -this.currentValue * 100; // Move slides by 100% for each page (10 images per page)
-    this.slidesContainerTarget.style.transform = `translateX(${offset}%)`;  // Apply the transformation
+    // Ensure correct offset calculation
+    const offset = -this.currentValue * 100; // Move by 100% per slide
+    this.slidesContainerTarget.style.transform = `translateX(${offset}%)`; // Apply horizontal movement
   }
 
-  // Load more images when the user clicks "next" and reaches the end
   loadNextPage() {
-    const nextPage = this.currentValue + 2; // Assuming you're paging 1-based, so +2 for the next page
+    const nextPage = this.currentValue + 2; // Fetch next page (1-based indexing)
     fetch(`${window.location.pathname}?page=${nextPage}`, {
       headers: { accept: "application/json" }
     })
@@ -55,11 +54,11 @@ export default class extends Controller {
     slide.classList.add("flex-shrink-0", "w-full", "flex", "justify-between", "gap-2");
     images.forEach((img) => {
       const imgDiv = document.createElement("div");
-      imgDiv.classList.add("flex-shrink-0", "w-[9.9%]");
+      imgDiv.classList.add("flex-shrink-0", "w-[9.9%]"); // Ensure consistent image width
       imgDiv.innerHTML = `<img src="${img.url}" class="w-full h-full object-cover rounded-lg border" />`;
       slide.appendChild(imgDiv);
     });
     this.slidesContainerTarget.appendChild(slide);
-    this.totalSlides++; // Increment total slides after loading the next page
+    this.totalSlides++;
   }
 }

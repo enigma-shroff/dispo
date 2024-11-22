@@ -219,25 +219,27 @@
         border: 1px solid #c0392b; /* Darker red border */
       }
 
-      .carousel-item {
-        # width: 100%;
-        height: 120px; /* Adjust the height to fit your layout */
-        # object-fit: cover; /* Ensure the image fits nicely */
-        border-radius: 8px;
-        filter: grayscale(20%) sepia(10%);
-      }
-
-      .swiper-container {
-        width: 100%;
-        max-width: 1000px; /* Adjust based on your layout */
-        margin: auto;
-      }
-
-      .swiper-slide {
+      .slidesContainer {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        transition: transform 0.5s ease-in-out;
+        width: 100%;
       }
+
+      .slide {
+        flex-shrink: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 2%;
+      }
+
+      .slide img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 0.5rem; /* Adjust for rounded corners */
+      }
+
 
     </style>
   </head>
