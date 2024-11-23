@@ -12,17 +12,17 @@
   
   <div 
     data-controller="carousel"
-    data-carousel-total-pages-value="<%= @total_pages %>"
+    data-carousel-total-pages-value="<%= @event_images.total_pages %>"
     class="relative w-full h-96 overflow-hidden"
   >
     <div 
       data-carousel-target="slidesContainer"
       class="flex transition-transform duration-500 ease-in-out"
-      style="width: <%= (@total_pages) * 100 %>%;"
+      style="width: 100%; display: flex; align-items: center; justify-content: center; height: 100%;"
     >
       <div 
         data-carousel-target="slide" 
-        class="flex-shrink-0 w-full flex justify-between gap-1"
+        class="flex-shrink-0 w-full flex justify-between gap-2"
       >
         <% @event_images.each do |image| %>
           <div class="flex-shrink-0 w-[9.9%]">

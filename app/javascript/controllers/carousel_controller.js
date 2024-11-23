@@ -3,22 +3,22 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["slidesContainer", "slide"];
   static values = {
-    current: { type: Number, default: 0 },  // Current page/slide
-    totalPages: { type: Number }           // Total number of pages from pagination
-  }
+    current: { type: Number, default: 0 },
+    totalPages: { type: Number },
+    loadedSlides: { type: Number, default: 1 },
+  };
 
   connect() {
-    // Ensure slidesContainer width matches total slides and total images
-    this.totalSlides = Math.ceil(this.totalPagesValue); // Total number of slides = total pages
-    // Set each slide to take the full width of the container
-    this.updateSlides();
+    this.totalSlides = Math.ceil(this.totalPagesValue); // Total number of pages/slides
+    console.log("Total Slides:", this.totalSlides);
+    this.updateSlides(true); // Initial render with adjusted offset
   }
 
   next() {
-    if (this.currentValue < this.totalSlides - 1) {
+    if (this.currentValue < this.loadedSlidesValue - 1) {
       this.currentValue++;
       this.updateSlides();
-    } else {
+    } else if (this.loadedSlidesValue < this.totalSlides) {
       this.loadNextPage();
     }
   }
@@ -30,35 +30,62 @@ export default class extends Controller {
     }
   }
 
-  updateSlides() {
-    // Ensure correct offset calculation
-    const offset = -this.currentValue * 100; // Move by 100% per slide
-    this.slidesContainerTarget.style.transform = `translateX(${offset}%)`; // Apply horizontal movement
+  updateSlides(initial = false) {
+    // If it's the first render, keep offset at 0
+    const offset = initial ? 0 : 50 - this.currentValue * 100;
+    this.slidesContainerTarget.style.transform = `translateX(${offset}%)`;
   }
 
   loadNextPage() {
-    const nextPage = this.currentValue + 2; // Fetch next page (1-based indexing)
+    const nextPage = this.loadedSlidesValue + 1;
+
     fetch(`${window.location.pathname}?page=${nextPage}`, {
-      headers: { accept: "application/json" }
+      headers: { accept: "application/json" },
     })
       .then((response) => response.json())
       .then((data) => {
-        this.appendImages(data.images);
-        this.currentValue++;
-        this.updateSlides();
-      });
+        if (data.images && data.images.length > 0) {
+          this.appendSlide(data.images);
+          this.loadedSlidesValue++;
+          this.currentValue++;
+          this.updateSlides();
+        } else {
+          console.warn("No more images to load.");
+        }
+      })
+      .catch((error) => console.error("Failed to load next page:", error));
   }
 
-  appendImages(images) {
+  appendSlide(images) {
     const slide = document.createElement("div");
-    slide.classList.add("flex-shrink-0", "w-full", "flex", "justify-between", "gap-2");
-    images.forEach((img) => {
+    slide.classList.add(
+      "flex-shrink-0",
+      "w-full",
+      "flex",
+      "justify-between",
+      "gap-2"
+    );
+
+    // Add up to 8 images or placeholders
+    for (let i = 0; i < 8; i++) {
       const imgDiv = document.createElement("div");
-      imgDiv.classList.add("flex-shrink-0", "w-[9.9%]"); // Ensure consistent image width
-      imgDiv.innerHTML = `<img src="${img.url}" class="w-full h-full object-cover rounded-lg border" />`;
+      imgDiv.classList.add("flex-shrink-0", "w-[9.9%]");
+
+      if (images[i]) {
+        imgDiv.innerHTML = `
+          <img src="${images[i].url}" 
+               class="w-full h-full object-cover rounded-lg border" />
+        `;
+      } else {
+        // Placeholder for missing images
+        imgDiv.innerHTML = `
+          <div class="w-full h-full bg-gray-200 rounded-lg border"></div>
+        `;
+      }
+
       slide.appendChild(imgDiv);
-    });
+    }
+
     this.slidesContainerTarget.appendChild(slide);
-    this.totalSlides++;
   }
 }

@@ -5,9 +5,8 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    @event_images = @event.event_images.page(params[:page]).per(10)
+    @event_images = @event.event_images.page(params[:page]).per(8)
 
-    @total_pages = @event_images.count / 10
     respond_to do |format|
       format.html # This renders the `show.html.erb` template
       format.json do
