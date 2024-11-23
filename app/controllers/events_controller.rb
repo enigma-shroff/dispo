@@ -4,20 +4,6 @@ class EventsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:upload]
   skip_before_action :authenticate_user!
 
-  def show
-    @event_images = @event.event_images.page(params[:page]).per(8)
-
-    respond_to do |format|
-      format.html # This renders the `show.html.erb` template
-      format.json do
-        render json: {
-          images: @event_images.map { |img| { id: img.id, url: img.image_url(:thumb) } },
-          current_page: @event_images.current_page,
-          total_pages: @event_images.total_pages
-        }
-      end
-    end
-  end
   
   def upload
 

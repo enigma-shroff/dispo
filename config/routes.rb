@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     member do
       post :upload
     end
+    resources :event_images
   end
   
   get 'events', to: redirect('/admin/events')
