@@ -149,10 +149,7 @@ export default class extends Controller {
   }
   
   closeImage(event) {
-    console.log(event)
     // Close only if clicking outside the image
-    console.log(event.target != this.imageTarget );
-    console.log(event.target != this.originalButtonTarget);
     if (event.target != this.imageTarget && event.target != this.originalButtonTarget) {
       this.imageContainerTarget.classList.add("hidden");
       this.imageTarget.src = ""; // Clear the image src
@@ -164,7 +161,6 @@ export default class extends Controller {
   showOriginal(event) {
     event.stopPropagation(); 
     // Toggle between original and filtered images
-    console.log(this.imageTarget.src, this.originalImageUrl, this.filteredImageUrl)
     if (this.imageTarget.src === this.originalImageUrl) {
       this.originalButtonTarget.innerHTML = "Original";
       this.imageTarget.src = this.filteredImageUrl;
