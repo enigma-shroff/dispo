@@ -1,10 +1,13 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["modal", "container", "content"]; // Add "content" for modal content
+  static targets = ["modal", "container", "content", "image", "imageContainer", "originalButton"]; // Add "content" for modal content
 
   connect() {
     this.boundCloseOnOutsideClick = this.closeOnOutsideClick.bind(this); // Bind the method for event listener
+    this.baseUrl = `${window.location.origin}`;
+    this.originalImageUrl = ""; // Placeholder for the original image URL
+    this.filteredImageUrl = ""; // Placeholder for the filtered image URL
   }
 
   open(event) {
@@ -132,4 +135,70 @@ export default class extends Controller {
   }
   
 
+  openImage(event) {
+    event.preventDefault();
+    const filteredEndpoint = event.currentTarget.dataset.imageUrl; // Filtered image endpoint
+    const originalEndpoint = event.currentTarget.dataset.originalImageUrl;
+    this.originalImageUrl = `${this.baseUrl}${originalEndpoint}`; // Construct full URL for original image
+    this.filteredImageUrl = `${this.baseUrl}${filteredEndpoint}`;
+    const modalImage = this.imageTarget;
+  
+    modalImage.src = this.filteredImageUrl;
+    this.imageContainerTarget.classList.remove("hidden");
+    this.imageContainerTarget.addEventListener("click", this.closeImage);
+  }
+  
+  closeImage(event) {
+    console.log(event)
+    // Close only if clicking outside the image
+    console.log(event.target != this.imageTarget );
+    console.log(event.target != this.originalButtonTarget);
+    if (event.target != this.imageTarget && event.target != this.originalButtonTarget) {
+      this.imageContainerTarget.classList.add("hidden");
+      this.imageTarget.src = ""; // Clear the image src
+      this.imageContainerTarget.removeEventListener("click", this.closeImage);
+      this.originalButtonTarget.innerHTML = "Original";
+    }
+  }
+
+  showOriginal(event) {
+    event.stopPropagation(); 
+    // Toggle between original and filtered images
+    console.log(this.imageTarget.src, this.originalImageUrl, this.filteredImageUrl)
+    if (this.imageTarget.src === this.originalImageUrl) {
+      this.originalButtonTarget.innerHTML = "Original";
+      this.imageTarget.src = this.filteredImageUrl;
+    } else {
+      this.originalButtonTarget.innerHTML = "Filtered";
+      this.imageTarget.src = this.originalImageUrl;
+    }
+  }
+
+  async downloadImage() {
+    try {
+      const response = await fetch(this.imageTarget.src); // Fetch the current image
+      const blob = await response.blob(); // Convert to Blob
+      const url = URL.createObjectURL(blob);
+
+      // Create a temporary link to trigger download
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "image.jpg"; // Default filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url); // Clean up URL object
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
+  }
+
+  deleteImage() {
+    if (confirm("Are you sure you want to delete this image?")) {
+      // Handle deletion logic here (e.g., send a request to the server)
+      alert("Image deleted successfully!");
+      this.close();
+    }
+  }
 }

@@ -1,9 +1,24 @@
-<div class="flex-shrink-0 w-[30%] sm:w-[25%] md:w-[20%] lg:w-[15%] aspect-square overflow-hidden">
-  <% if event_image.image_url(:thumb).present? %>
-    <%= image_tag event_image.image_url(:thumb), class: "w-full h-full object-cover rounded-lg border" %>
-  <% else %>
-    <div class="bg-gray-200 w-full h-full flex items-center justify-center text-gray-500 text-sm rounded-lg border">
-      No Image
+<div data-controller="modal" class="carousel-container">
+  <div  class="carousel-thumbnail" >
+    <% if event_image.image_url(:thumb).present? %>
+      <img 
+          src="<%= event_image.image_url(:thumb) %>" 
+          data-action="click->modal#openImage"  
+          data-image-url="<%=event_image.image_url(:filtered) %>"
+          data-original-image-url="<%= event_image.image_url(:original) %>"
+      />
+    <% else %>
+      <div class="bg-gray-200 w-full h-full flex items-center justify-center text-gray-500 text-sm rounded-lg border">
+        No Image
+      </div>
+     <% end %>
+  </div>
+  <div class="image-modal hidden" data-action="click->modal#closeImage" data-modal-target="imageContainer">
+    <img src="" alt="Full-size image" class="image-modal-content" data-modal-target="image">
+    <div class="modal-buttons">
+      <button class="btn original-btn" data-action="click->modal#showOriginal" data-modal-target="originalButton">Original</button>
+      <button class="btn download-btn" data-action="click->modal#downloadImage">Download</button>
+      <button class="btn delete-btn" data-action="click->modal#deleteImage">Trash</button>
     </div>
-  <% end %>
+  </div>
 </div>

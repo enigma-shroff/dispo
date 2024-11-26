@@ -297,6 +297,88 @@
         background-color: #0056b3;
       }
 
+      .carousel-thumbnail {
+        flex-shrink: 0;
+        width: 182px;
+        height: 182px;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .carousel-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .carousel-container {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 2000;
+        overflow: hidden;
+      }
+
+      .image-modal.hidden {
+        display: none;
+      }
+
+      .image-modal-content {
+        max-width: 90%;
+        max-height: 90%;
+        display: block;
+        margin: auto;
+        object-fit: contain;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        background-color: transparent;
+      }
+
+      .modal-buttons {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .modal-buttons .btn {
+        background: rgba(0, 0, 0, 0.5); /* Transparent dark background */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .modal-buttons .btn:hover {
+        background: rgba(255, 255, 255, 0.7); /* Slightly lighter on hover */
+        color: black;
+      }
+
+      .modal-buttons .btn.delete-btn {
+        background: rgba(255, 0, 0, 0.6); /* Red for the delete button */
+      }
+
+      .modal-buttons .btn.delete-btn:hover {
+        background: rgba(255, 0, 0, 0.8);
+      }
 
     </style>
   </head>
