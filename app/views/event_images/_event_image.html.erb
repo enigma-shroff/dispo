@@ -7,6 +7,8 @@
           data-image-url="<%=event_image.image_url(:filtered) %>"
           data-original-image-url="<%= event_image.image_url(:original) %>"
       />
+      <button class="thumbnail-delete-button" data-action="click->carousel#deleteImage"
+      data-event-id="<%= event_image.event_id%>" data-image-id="<%= event_image.id %>">×</button>
     <% else %>
       <div class="bg-gray-200 w-full h-full flex items-center justify-center text-gray-500 text-sm rounded-lg border">
         No Image
