@@ -43,16 +43,14 @@ class Admin::EventsController < ApplicationController
   def generate_qr
     url = event_url(@event) # Generates the full URL for the event
     qr_code = RQRCode::QRCode.new(url)
-
+  
     svg = qr_code.as_svg(
       offset: 0,
       color: "000",
       shape_rendering: "crispEdges",
-      module_size: 6,
-      standalone: true
+      module_size: 6
     )
   
-    # Explicitly render the SVG with correct headers
     render plain: svg, content_type: "image/svg+xml"
   end
 

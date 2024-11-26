@@ -2,6 +2,7 @@ class EventImagesController < ApplicationController
   before_action :set_event
 
   def index
+    debugger
     @event_images = @event.event_images
 
     respond_to do |format|

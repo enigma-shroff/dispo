@@ -1,10 +1,10 @@
 <div class="landing-hero">
-  
+
   <h1>Events</h1>
 
   <%= link_to "New Event", new_admin_event_path, class: "btn-primary" %>
 
-  <div class="upload-section">
+  <div class="upload-section" data-controller="modal">
     <table>
       <thead>
         <tr>
@@ -21,11 +21,27 @@
             <td>
               <%= link_to "Edit", edit_admin_event_path(event), class: "btn-primary" %>
               <%= link_to "View", event_path(event), class: "btn-primary" %>
-              <%= link_to 'QR', generate_qr_admin_event_path(event), target: '_blank', class: 'btn btn-primary' %>
+              <%= link_to 'QR', '#', 
+                  class: 'btn btn-primary', 
+                  data: {
+                    action: "click->modal#open", 
+                    modal_qr_url: generate_qr_admin_event_path(event) 
+                  } %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    <div class="modal hidden" data-modal-target="modal">
+      <div class="modal-content" data-modal-target="content">
+        <button class="close-btn" data-action="click->modal#close">&times;</button>
+        <div class="qr-code-container" data-modal-target="container">
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" data-action="click->modal#exportQr">Export QR as Image</button>
+          <button class="btn btn-primary" data-action="click->modal#copyQr">Copy QR to Clipboard</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

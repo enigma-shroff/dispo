@@ -1,21 +1,28 @@
 <div 
-  data-controller="carousel"
-  data-carousel-total-pages-value="<%= 3 %>"
-  class="relative w-full h-96 overflow-hidden"
+  data-controller="carousel" 
+  data-carousel-total-pages-value="<%= (@event.event_images.count / images_per_slide).ceil %>" 
+  class="relative w-full overflow-hidden"
 >
+  <!-- Carousel Slides -->
   <div 
-    data-carousel-target="slidesContainer"
+    data-carousel-target="slidesContainer" 
     class="flex transition-transform duration-500 ease-in-out"
-    style="width: 100%; display: flex; align-items: center; justify-content: center; height: 100%;"
+    style="gap: 16px;"
   >
-    <div 
-      data-carousel-target="slide" 
-      class="flex-shrink-0 w-full flex justify-between gap-2"
-    >
-      <%= render @event.event_images %>
-    </div>
+    <% @event.event_images.each_slice(images_per_slide).with_index do |image_batch, index| %>
+      <div 
+        data-carousel-target="slide" 
+        class="flex-shrink-0 flex gap-4 w-full"
+        style="flex: 0 0 100%; display: flex;"
+      >
+        <% image_batch.each do |event_image| %>
+          <%= render partial: 'event_images/event_image', locals: { event_image: event_image } %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
+  <!-- Navigation Buttons -->
   <div class="absolute top-1/2 left-4 transform -translate-y-1/2 z-10">
     <button 
       data-action="click->carousel#previous"
