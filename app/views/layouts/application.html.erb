@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Dispo" %></title>
+    <title>Dispo - Capture Moments Together</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -21,7 +21,6 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "https://unpkg.com/swiper/swiper-bundle.min.css" %>
     <%= javascript_include_tag "https://unpkg.com/swiper/swiper-bundle.min.js" %>
 
@@ -121,6 +120,7 @@
        align-items: center;
        position: relative;
        width: 100%;
+       padding: 1rem;
      }
     
      .devise-page .page-actions {
@@ -405,19 +405,101 @@
       .thumbnail-delete-button:hover {
         background: rgba(255, 0, 0, 0.7);
       }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin-top: 5px;
+        z-index: 1;
+      }
+
+      .dropdown-menu.show {
+        display: block;
+      }
+
+      .dropdown-item {
+        padding: 10px 20px;
+        cursor: pointer;
+        color: #333;
+        text-align: left;
+        background-color: transparent;
+        border: none;
+        width: 100%;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f1f1f1;
+      }
+
+      /* Progress Bar */
+      .progress-bar {
+        margin-top: 20px;
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        height: 25px;
+      }
+
+      .progress-bar span {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        line-height: 25px;
+        font-size: 14px;
+        color: #333;
+      }
+
+      #loading-bar {
+        height: 100%;
+        background-color: #76c7c0;
+        text-align: center;
+        color: white;
+        width: 0%;
+        transition: width 0.3s ease-in-out;
+      }
+
+      .auth-container {
+        display: flex;
+        justify-content: flex-end; /* Ensures buttons align to the right */
+        gap: 1rem; /* Space between buttons */
+        margin-left: auto; /* Pushes buttons to the far right */
+      }
+
+      .auth-btn {
+        text-decoration: none;
+        background-color: var(--accent-primary);
+        color: white;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.2s ease-in-out;
+      }
     </style>
   </head>
 
   <body>
     <div class="page-actions">
-     <% if request.path != events_path %>
-       <%= link_to "← Back", events_path, class: "back-btn" %>
-     <% end %>
+      <% if request.path != events_path && request.path != root_path && request.path != admin_events_path %>
+        <%= link_to "← Back", events_path, class: "back-btn" %>
+      <% end %>
 
-     <% if user_signed_in? %>
-       <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn" %>
-     <% end %>
-   </div>
+      <div class="auth-container">
+        <% if user_signed_in? %>
+          <% if request.path == root_path %>
+            <%= link_to "Events", events_path, class: "auth-btn" %>
+          <% end %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "auth-btn" %>
+        <% else %>
+          <%= link_to "Log In", new_user_session_path, class: "auth-btn" %>
+          <%= link_to "Sign Up", new_user_registration_path, class: "auth-btn" %>
+        <% end %>
+      </div>
+    </div>
     <%= yield %>
   </body>
 </html>

@@ -10,12 +10,13 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root 'pages#landing'
   devise_for :users
   
   resources :events, only: [:show] do
     member do
       post :upload
+      post :export
     end
     resources :event_images
   end

@@ -20,6 +20,14 @@ class EventsController < ApplicationController
     return redirect_to event_path(@event)
   end
 
+  def export
+    event = Event.find(params[:id])
+    type = params[:type]
+
+    ExportFileJob.perform_async(event.id, type)
+    render json: { message: "Export started. Please wait..." }, status: :ok
+  end
+
   private
   
   def set_event

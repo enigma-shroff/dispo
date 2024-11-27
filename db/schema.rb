@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_23_173610) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_27_093546) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -69,6 +69,16 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_173610) do
     t.index ["admin_id"], name: "index_events_on_admin_id"
   end
 
+  create_table "exported_files", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.text "file_data"
+    t.string "file_type"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_exported_files_on_event_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", null: false
@@ -87,4 +97,5 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_173610) do
   add_foreign_key "event_images", "events"
   add_foreign_key "event_images", "users"
   add_foreign_key "events", "users", column: "admin_id"
+  add_foreign_key "exported_files", "events"
 end

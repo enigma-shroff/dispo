@@ -21,4 +21,34 @@
       <%= f.submit "Upload Photos", class: "btn-primary" %>
     <% end %>
   </div>
+
+  <div class="export-section" data-controller="export" data-event-id="<%= @event.id %>">
+    <h2>Export Options</h2>
+    <div class="dropdown">
+      <button class="dropdown-toggle btn-primary" data-action="click->export#toggleDropdown">
+        Export
+      </button>
+      <div class="dropdown-menu" data-export-target="dropdownMenu">
+        <button class="dropdown-item" data-type="pdf" data-action="click->export#triggerExport">Export as PDF</button>
+        <button class="dropdown-item" data-type="zip" data-action="click->export#triggerExport">Export as ZIP</button>
+      </div>
+    </div>
+    <div id="export-progress" class="progress-bar">
+      <span id="progress-text" data-export-target="progressText">Export Progress: 0%</span>
+      <div id="loading-bar" data-export-target="loadingBar"></div>
+    </div>
+  </div>
+
+  <div class="exported-files">
+    <h2>Previous Exports</h2>
+    <% @event.exported_files.each do |exported_file| %>
+      <div class="exported-file">
+        <p>File Type: <%= exported_file.file_type.upcase %></p>
+        <p>Status: <%= exported_file.status.capitalize %></p>
+        <% if exported_file.status == "completed" %>
+          <a href="<%= exported_file.file_url %>" class="btn-download">Download</a>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

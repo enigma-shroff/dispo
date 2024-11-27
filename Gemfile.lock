@@ -224,6 +224,11 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
+    pdf-core (0.10.0)
+    prawn (2.5.0)
+      matrix (~> 0.4)
+      pdf-core (~> 0.10.0)
+      ttfunk (~> 1.8)
     propshaft (1.1.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -278,6 +283,8 @@ GEM
     rake (13.2.1)
     rdoc (6.8.1)
       psych (>= 4.0.0)
+    redis-client (0.22.2)
+      connection_pool
     regexp_parser (2.9.2)
     reline (0.5.11)
       io-console (~> 0.5)
@@ -332,6 +339,11 @@ GEM
     shrine (3.6.0)
       content_disposition (~> 1.0)
       down (~> 5.1)
+    sidekiq (7.3.6)
+      connection_pool (>= 2.3.0)
+      logger
+      rack (>= 2.2.4)
+      redis-client (>= 0.22.2)
     solid_cable (3.0.2)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -383,6 +395,8 @@ GEM
     thruster (0.1.9-x86_64-darwin)
     thruster (0.1.9-x86_64-linux)
     timeout (0.4.2)
+    ttfunk (1.8.0)
+      bigdecimal (~> 3.1)
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -433,6 +447,7 @@ DEPENDENCIES
   jbuilder
   kamal
   kaminari
+  prawn
   propshaft
   puma (>= 5.0)
   pundit
@@ -441,6 +456,7 @@ DEPENDENCIES
   rubocop-rails-omakase
   selenium-webdriver
   shrine
+  sidekiq
   solid_cable
   solid_cache
   solid_queue
